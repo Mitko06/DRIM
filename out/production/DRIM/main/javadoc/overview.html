@@ -1,0 +1,218 @@
+<html>
+<head>
+</head>
+<body>
+
+Combinatoricslib 3 is library for generating combinatorial objects of any types for java 8.
+
+<h2>Features</h2>
+<ol>
+	<li>Library can generate the following combinatorial objects:
+		<ul>
+			<li>All possible simple combinations of a vector</li>
+			<li>All possible multi-combinations (with repetitions) of a vector</li>
+			<li>All possible permutations with and without repetitions of a vector</li>
+			<li>All possible sub-sets of a set</li>
+		</ul>
+	</li>
+</ol>
+
+<h3> 1. Simple permutations </h3>
+<p>A permutation is an ordering of a set in the context of all possible orderings. For example, the set
+containing the first three digits, 123, has six permutations: 123, 132, 213, 231, 312, and 321.
+<p>
+This is an example of the permutations of the 3 string items (apple, orange, cherry):
+<p>
+<blockquote>
+<pre>
+    Generator.permutation("apple", "orange", "cherry")
+    .simple()
+    .stream()
+    .forEach(System.out::println);
+</pre>
+</blockquote>
+
+<p>The result of 6 permutations
+<blockquote>
+<pre>
+    [apple, orange, cherry]
+    [apple, cherry, orange]
+    [cherry, apple, orange]
+    [cherry, orange, apple]
+    [orange, cherry, apple]
+    [orange, apple, cherry]
+</pre>
+</blockquote>
+
+This generator can produce the permutations <b>even if an initial vector has duplicates</b>. For example,
+all permutations of (1, 1, 2, 2):
+
+<blockquote>
+<pre>
+    Generator.permutation(1, 1, 2, 2)
+    .simple()
+    .stream()
+    .forEach(System.out::println);
+</pre>
+</blockquote>
+
+The result of all possible permutations (with duplicates)
+<blockquote>
+<pre>
+    [1, 1, 2, 2]
+    [1, 2, 1, 2]
+    [1, 2, 2, 1]
+    [2, 1, 1, 2]
+    [2, 1, 2, 1]
+    [2, 2, 1, 1]
+</pre>
+</blockquote>
+
+
+<h3> 2. Permutations with repetitions </h3>
+Permutation may have more elements than slots. For example, all possible permutation of '12'
+in three slots are: 111, 211, 121, 221, 112, 212, 122, and 222.
+
+Let's generate all possible permutations with repetitions of 3 elements from the set of apple and orange.
+
+<blockquote>
+<pre>
+List&lt;List&lt;String&gt;&gt; permutations = Generator
+    .permutation("apple", "orange")
+    .withRepetitions(3)
+    .stream()
+    .collect(Collectors.&lt;List&lt;String&gt;&gt;toList());
+
+    permutations.stream().forEach(System.out::println);
+</pre>
+</blockquote>
+
+<p>And the result of 8 permutations
+
+<blockquote>
+<pre>
+    [apple, apple, apple]
+    [orange, apple, apple]
+    [apple, orange, apple]
+    [orange, orange, apple]
+    [apple, apple, orange]
+    [orange, apple, orange]
+    [apple, orange, orange]
+    [orange, orange, orange]
+</pre>
+</blockquote>
+
+
+<h3> 3. Simple combinations</h3>
+<p>
+    A simple k-combination of a finite set S is a subset of k distinct elements of S.
+    Specifying a subset does not arrange them in a particular order. As an example, a poker hand can
+    be described as a 5-combination of cards from a 52-card deck: the 5 cards of the hand are all distinct,
+    and the order of the cards in the hand does not matter.
+<p>
+    Let's generate all 3-combination of the set of 5 colors (red, black, white, green, blue).
+
+<blockquote>
+<pre>
+    List&lt;List&lt;String&gt;&gt; combinations = Generator.combination("red", "black", "white", "green", "blue")
+    .simple(3)
+    .stream()
+    .collect(Collectors.&lt;List&lt;String&gt;&gt;toList());
+    combinations.stream().forEach(System.out::println);
+</pre>
+</blockquote>
+<p>And the result of 10 combinations
+<blockquote>
+<pre>
+    [red, black, white]
+    [red, black, green]
+    [red, black, blue]
+    [red, white, green]
+    [red, white, blue]
+    [red, green, blue]
+    [black, white, green]
+    [black, white, blue]
+    [black, green, blue]
+    [white, green, blue]
+</pre>
+</blockquote>
+
+<h3> 4. Multi-combinations</h3>
+<p>A k-multicombination or k-combination with repetition of a finite set S is given by a sequence of
+k not necessarily distinct elements of S, where order is not taken into account.
+<p>
+As an example. Suppose there are 2 types of fruits (apple and orange) at a grocery store, and you
+want to buy 3 pieces of fruit. You could select
+<blockquote>
+<pre>
+- (apple, apple, apple)
+- (apple, apple, orange)
+- (apple, orange, orange)
+- (orange, orange, orange)
+</pre>
+</blockquote>
+<p>Example. Generate 3-combinations with repetitions of the set (apple, orange). You can pass an array
+as a parameter of the function.
+<blockquote>
+<pre>
+    Generator.combination(new String[] { "apple", "orange" })
+    .multi(3)
+    .stream()
+    .forEach(System.out::println);
+</pre>
+</blockquote>
+<blockquote>
+<pre>
+    [apple, apple, apple]
+    [apple, apple, orange]
+    [apple, orange, orange]
+    [orange, orange, orange]
+</pre>
+</blockquote>
+
+<h3> 5. Subsets</h3>
+<p>A set A is a subset of a set B if A is "contained" inside B. A and B may coincide.
+    The relationship of one set being a subset of another is called inclusion or sometimes containment.
+<p>Examples:
+<p>The set (1, 2) is a proper subset of (1, 2, 3).
+<p>Any set is a subset of itself, but not a proper subset.
+<p>The empty set, denoted by ∅, is also a subset of any given set X.
+<p>All subsets of (1, 2, 3) are:
+<blockquote>
+<pre>
+    - ()
+    - (1)
+    - (2)
+    - (1, 2)
+    - (3)
+    - (1, 3)
+    - (2, 3)
+    - (1, 2, 3)
+</pre>
+</blockquote>
+<p>Here is a piece of code that generates all possible subsets of (one, two, three)
+<blockquote>
+<pre>
+    List&lt;List&lt;String&gt;&gt; subsets = Generator
+    .subset("one", "two", "three")
+    .simple()
+    .stream()
+    .collect(Collectors.&lt;List&lt;String&gt;&gt;toList());
+    subsets.stream().forEach(System.out::println);
+</pre>
+</blockquote>
+<p>And the result of all possible 8 subsets
+<blockquote>
+<pre>
+    []
+    [one]
+    [two]
+    [one, two]
+    [three]
+    [one, three]
+    [two, three]
+</pre>
+</blockquote>
+
+</body>
+</html>
